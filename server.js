@@ -27,16 +27,19 @@ app.post("/register", async (req, res) => {
                 error: "Password must be at least 6 characters long.",
             });
         }
- 
+
         const userResponse = await admin.auth().createUser({
             email,
             password,
-            emailVerified: false,
+            emailVerified: false,  
             disabled: false,
         });
 
+        const user = await admin.auth().getUser(userResponse.uid);
+        await admin.auth().generateEmailVerificationLink(user.email);
+ 
         res.status(201).json({
-            message: "User created successfully",
+            message: "User created successfully. Please verify your email.",
             user: userResponse,
         });
     } catch (error) {
@@ -73,6 +76,12 @@ app.post("/login", async (req, res) => {
         if (!userRecord) {
             return res.status(400).json({
                 error: "User not found. Please register first.",
+            });
+        }
+
+        if (!userRecord.emailVerified) {
+            return res.status(400).json({
+                error: "Please verify your email before logging in.",
             });
         }
 
@@ -130,7 +139,30 @@ app.post("/google-login", async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 8080;
+app.post("/reset-password", async (req, res) => {
+    const { email } = req.body;
+    
+    if (!email) {
+        return res.status(400).json({
+            error: "Email is required.",
+        });
+    }
+
+    try {
+        await admin.auth().sendPasswordResetEmail(email);
+        res.status(200).json({
+            message: "Password reset email sent.",
+        });
+    } catch (error) {
+        console.error("Error sending reset email:", error);
+        res.status(500).json({
+            error: "Failed to send password reset email.",
+        });
+    }
+});
+
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}.`);
 });
