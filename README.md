@@ -1,1 +1,1 @@
-"# Dermato.AI Project CC" 
+# Dermato.AI Project CC
