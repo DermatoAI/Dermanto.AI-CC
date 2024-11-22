@@ -1,0 +1,18 @@
+{
+  "name": "dermato-ai",
+  "version": "1.0.0",
+  "description": "\"# Dermato.AI Project CC\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "eslint": "^9.15.0",
+    "globals": "^15.12.0",
+    "prettier": "3.3.3"
+  }
+}
