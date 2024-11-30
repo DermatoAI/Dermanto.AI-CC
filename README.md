@@ -5,7 +5,7 @@
 http://localhost:3000
 ```
 
-## Endpoint: Analyze Skin
+## Endpoint
 **URL:** /analyze-skin
 
 **Method:** POST
