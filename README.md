@@ -12,6 +12,7 @@ http://localhost:3000
 
 **Description:** Mengirim gambar kulit untuk dianalisis oleh model ML dan menerima diagnosis, tingkat keyakinan, serta saran perawatan.
 
+
 ### Request
 **Header**
 ```
@@ -19,6 +20,7 @@ http://localhost:3000
   "Authorization": "Bearer <token>"
 }
 ```
+
 **Payload:** (multipart/form-data)
 | Key    | Type  | Required | Description                   |
 |--------|-------|----------|-------------------------------|
@@ -27,6 +29,7 @@ http://localhost:3000
 **Validation Rules:**
 * Format gambar: JPEG, PNG
 * Ukuran maksimum: 2 MB
+
 
 ### Response
 **Success Response (Confidence Score > 99):**
@@ -45,6 +48,7 @@ http://localhost:3000
   }
 }
 ```
+
 **Partial Success Response (Confidence Score ≤ 99):**
 
 **Status Code:** 201 Created
