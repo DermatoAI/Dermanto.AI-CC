@@ -7,7 +7,9 @@ http://localhost:3000
 
 ## Endpoint: Analyze Skin
 **URL:** /analyze-skin
+
 **Method:** POST
+
 **Description:** Mengirim gambar kulit untuk dianalisis oleh model ML dan menerima diagnosis, tingkat keyakinan, serta saran perawatan.
 
 ### Request
@@ -21,12 +23,14 @@ http://localhost:3000
 | Key    | Type  | Required | Description                   |
 |--------|-------|----------|-------------------------------|
 | image  | File  | Yes      | Gambar yang akan dianalisis   |
+
 **Validation Rules:**
 * Format gambar: JPEG, PNG
 * Ukuran maksimum: 2 MB
 
 ### Response
 **Success Response (Confidence Score > 99):**
+
 **Status Code:** 201 Created
 ```
 {
@@ -42,6 +46,7 @@ http://localhost:3000
 }
 ```
 **Partial Success Response (Confidence Score ≤ 99):**
+
 **Status Code:** 201 Created
 ```
 {
@@ -61,7 +66,5 @@ http://localhost:3000
 | Status Code   | Message                                    |
 |---------------|--------------------------------------------|
 | 400           | "Validation error: Invalid image format."  |
-|---------------|--------------------------------------------|
 | 401           | "Authentication required."                 |
-|---------------|--------------------------------------------|
 | 500           | "Internal Server Error."                   |
