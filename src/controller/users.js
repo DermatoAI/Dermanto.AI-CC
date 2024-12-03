@@ -17,21 +17,19 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body; // Ambil email dan password dari request body
+    const { email, password } = req.body;
     
     try {
-        const [data] = await userModel.findUser(email); // Cari user berdasarkan email
+        const [data] = await userModel.findUser(email);
 
         if (data.length > 0) {
-            // User ditemukan, bandingkan password
-            const user = data[0]; // Ambil user pertama
+            const user = data[0];
             if (user.password === password) {
                 res.json({
                     message: "Login successfully",
                     data: {
                         id: user.id,
-                        email: user.email,
-                        // Jangan sertakan password di response!
+                        email: user.email
                     }
                 }); 
             } else {
@@ -77,9 +75,6 @@ const createNewUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const idUser = req.params.id;
     const {body} = req;
-    console.log(body);
-    console.log(idUser);
-    
 
     try {
         await userModel.updateUser(body, idUser);   

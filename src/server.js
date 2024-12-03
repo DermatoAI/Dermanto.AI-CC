@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const userRoutes = require('./routers/users.js');
 const googleRoutes = require('./routers/googleauth.js');
+const apointmentsRouters = require('./routers/appointments.js');
 const middlerwareLogs = require('./middleware/logs.js');
 
 const app = express();
@@ -18,6 +19,9 @@ app.use('/auth/google', googleRoutes);
 
 // users endpoint
 app.use('/users', userRoutes);
+
+// apointments enpoint
+app.use('/appointments', apointmentsRouters);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () =>{

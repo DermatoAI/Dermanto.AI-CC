@@ -7,7 +7,7 @@
 
 ## Structure Request and Response body
 
-[GET] /auth/google
+## [GET] /auth/google
 
 ### Response
 
@@ -15,12 +15,12 @@ if already exixts
 
 ```json
 {
-    message: 'User already exists in database',
-    data: {
-        name: xxx,
-        email: xxx,
-        role: 'user',
-        picture: xxx,
+    "message": "User already exists in database",
+    "data": {
+        "name": "xxx",
+        "email": "xxx",
+        "role": "user",
+        "picture": "xxx"
     }
 }
 ```
@@ -28,25 +28,25 @@ if already exixts
 if doesn't exist yet
 ```json
 {
-    message: 'New user added to database',
-    data: {
-        name: xxx,
-        email: xxx,
-        role: 'user',
-        picture: xxx,
+    "message": "New user added to database",
+    "data": {
+        "name": "xxx",
+        "email": "xxx",
+        "role": "user",
+        "picture": "xxx"
     }
 }
 ```
 
-[POST] /users/signup
+## [POST] /users/signup
 
 ### Request
 ```json
 {
-    name: xxx,
-    email: xxx,
-    password: xxx,
-    role: 'user'
+    "name": "xxx",
+    "email": "xxx",
+    "password": "xxx",
+    "role": "user"
 }
 ```
 
@@ -54,22 +54,22 @@ if doesn't exist yet
 if doesn't exist yet
 ```json
 {
-    message: 'create new user success',
-    data: {
-        name: xxx,
-        email: xxx,
-        role: 'user'
+    "message": "create new user success",
+    "data": {
+        "name": "xxx",
+        "email": "xxx",
+        "role": "user"
     }
 }
 ```
 
-[POST] /users/signin
+## [POST] /users/signin
 
 ### Request
 ```json
 {
-    email: xxx,
-    password: xxx,
+    "email": "xxx",
+    "password": "xxx"
 }
 ```
 
@@ -77,18 +77,18 @@ if doesn't exist yet
 if doesn't exist yet
 ```json
 {
-    message: 'User not found',
-    data: null
+    "message": "User not found",
+    "data": null
 }
 ```
 
 if already exist yet
 ```json
 {
-    message: 'Login successfully',
-    data: {
-        id: xxx,
-        email: xxx,
+    "message": "Login successfully",
+    "data": {
+        "id": "xxx",
+        "email": "xxx",
     }
 }
 ```
@@ -96,7 +96,93 @@ if already exist yet
 if already exist but wrong password
 ```json
 {
-    message: 'Wrong password',
-    data: null
+    "message": "Wrong password",
+    "data": null
+}
+```
+
+
+## Endpoint Apointments
+- /appointments
+    - /all
+    - /create
+    - /update/id
+    - /delete/id 
+
+## Structure Request and Response body
+
+## [GET] /appointments/all
+### response
+```json
+{
+    "message": "get all appointments success",
+    "data": [
+        {
+            "id": "x",
+            "user_id": "x",
+            "doctor_id": "x",
+            "appointment_date": "xxxx",
+            "status": "xxxx",
+            "created_at": "xxxx"
+        }
+    ]
+}
+```
+
+## [POST] /appointments/create
+
+### request
+```json
+{
+    "user_id": "x",
+    "doctor_id": "x",
+    "appointment_date": "xxxx",
+    "status": "xxxx"
+}
+```
+### response
+```json
+{
+    "message": "create new appointments success",
+    "data": {
+        "user_id": "x",
+        "doctor_id": "x",
+        "appointment_date": "xxxx",
+        "status": "xxxx"
+    }
+}
+```
+
+## [PATCH] /appointments/update/id
+
+### request
+```json
+{
+    "user_id": "x",
+    "doctor_id": "x",
+    "appointment_date": "xxxx",
+    "status": "xxxx"
+}
+```
+### response
+```json
+{
+    "message": "update appointments success",
+    "data": {
+        "id": "x",
+        "user_id": "x",
+        "doctor_id": "x",
+        "appointment_date": "xxxx",
+        "status": "xxxx"
+    }
+}
+```
+
+## [DELETE] /appointments/delete/id
+### response
+```json
+{
+    "message": "delete appointments success",
+    "data": {}
 }
 ```
