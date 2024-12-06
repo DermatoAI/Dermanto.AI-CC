@@ -13,8 +13,10 @@
   "description": "",
   "dependencies": {
     "@google-cloud/firestore": "^7.10.0",
+    "@google-cloud/storage": "^7.14.0",
     "@hapi/hapi": "^21.3.12",
-    "@tensorflow/tfjs-node": "^4.14.0",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "dotenv": "^16.4.5",
     "joi": "^17.13.3"
   },

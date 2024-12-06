@@ -1,24 +1,18 @@
-const postAnalyzetHandler = require('../server/handler');
-const Joi = require('joi');
+const postPredictHandler = require('../server/handler');
 
 const routes = [
   {
     path: '/analyze-skin',
     method: 'POST',
-    handler: postAnalyzetHandler,
+    handler: postPredictHandler,
     options: {
       payload: {
         allow: 'multipart/form-data',
         multipart: true,
         maxBytes: 2 * 1024 * 1024
       },
-      validate: {
-        payload: Joi.object({
-          image: Joi.any().required().description('Image files to be analyzed'),
-        })
-      }
     }
   }
 ]
- 
+
 module.exports = routes;

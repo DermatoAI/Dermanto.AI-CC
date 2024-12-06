@@ -10,41 +10,53 @@ const InputError = require('../exceptions/InputError');
         port: 3000,
         host: 'localhost',
         routes: {
-            cors: {
-              origin: ['*'],
-            },
+          cors: {
+            origin: ['*'],
+          },
+          payload: {
+              maxBytes: 2000000, 
+          },
         },
     });
  
     const model = await loadModel();
-    server.app.model = model;
+    server.app.model = model;  
  
-    server.route(routes);
+    server.route(routes); 
  
     server.ext('onPreResponse', function (request, h) {
         const response = request.response;
- 
+      
+        if (response.isBoom && response.output.statusCode === 413) {
+          const newResponse = h.response({
+            status: 'fail',
+            message: 'Payload content length greater than maximum allowed: 2000000',
+          });
+          newResponse.code(413); 
+          return newResponse;
+        }
+      
         if (response instanceof InputError) {
-            const newResponse = h.response({
-                status: 'fail',
-                message: `${response.message} Please use another photo.`
-            })
-            newResponse.code(response.statusCode)
-            return newResponse;
+          const newResponse = h.response({
+            status: 'fail',
+            message: response.message,
+          });
+          newResponse.code(400); 
+          return newResponse;
         }
- 
+      
         if (response.isBoom) {
-            const newResponse = h.response({
-                status: 'fail',
-                message: response.message
-            })
-            newResponse.code(response.statusCode)
-            return newResponse;
+          const newResponse = h.response({
+            status: 'fail',
+            message: 'An error occurred while making the prediction',
+          });
+          newResponse.code(500);
+          return newResponse;
         }
- 
+      
         return h.continue;
     });
- 
+      
     await server.start();
     console.log(`Server start at: ${server.info.uri}`);
 })();

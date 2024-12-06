@@ -1,40 +1,58 @@
-const analyzeClassification = require('../services/inferenceService');
+const { predictClassification } = require('../services/inferenceService');
 const crypto = require('crypto');
-const storeData = require('../services/storeData');
+const uploadImage = require('../services/storeImage');
 
-async function postAnalyzeHandler(request, h) {
+async function postPredictHandler(request, h) {
+  const { image, userId } = request.payload;
+
+  if (!userId) { 
+    return h.response({
+      status: 'fail',
+      message: 'userId not provided',
+    }).code(401);
+  }
+
+  if (Buffer.byteLength(image) > 2000000) {  
+    return h.response({
+      status: 'fail',
+      message: 'Payload content length greater than maximum allowed: 2000000',
+    }).code(413);
+  }
+
+  const { model } = request.server.app;
+
   try {
-    const { image } = request.payload; 
-    const { model } = request.server.app; 
-    const { diagnosis, confidenceScore, treatmentSuggestion } = await analyzeClassification(model, image); 
-    
-    const id = crypto.randomUUID(); 
+    const imageId = crypto.randomUUID();
+    const imageUrl = await uploadImage(image, imageId);
+
+    const { label, confidenceScore } = await predictClassification(model, image); 
     const timestamp = new Date().toISOString(); 
-    const userId = request.auth.credentials?.userId; 
 
     const data = {
-      imageId: id, 
-      diagnosis: diagnosis,
-      confidence: confidenceScore,
-      treatmentSuggestions: treatmentSuggestion,
-      timestamp: timestamp,
-      user_id: userId,
+      "imageId": imageUrl,
+      "diagnosis": label,
+      "confidence": confidenceScore,
+      "timestamp": timestamp,
+      "userId": userId,
     };
-
-    await storeData(id, data);
-
+    
     const response = h.response({
-      message: confidenceScore > 99 
-        ? 'Image successfully analyzed.' 
-        : 'Image successfully analyzed but under threshold. Please use the correct picture.',
-      result: data,
+      status: 'success',
+      message: confidenceScore > 92
+        ? 'Image successfully analyzed'
+        : 'Image successfully analyzed but under threshold. Please use the correct picture',
+      data
     });
     response.code(201);
     return response;
+
   } catch (error) {
-    console.error(error);
-    throw new InputError('Failed to analyze the image.');
+    console.error("Error during prediction:", error);
+    return h.response({
+      status: 'fail',
+      message: error.message || 'An error occurred while making the prediction',
+    }).code(400); 
   }
 }
 
-module.exports = postAnalyzeHandler;
+module.exports = postPredictHandler;
