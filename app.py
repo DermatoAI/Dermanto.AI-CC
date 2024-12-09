@@ -19,10 +19,10 @@ app = Flask(__name__)
 
 lemmatizer = WordNetLemmatizer()
 
-MODEL_PATH = "model/chatbot_model.h5"
-WORDS_PATH = "model/words.pkl"
-CLASSES_PATH = "model/classes.pkl"
-INTENTS_PATH = "model/merged_dataset.json"
+MODEL_PATH = os.path.join(os.getcwd(), "model/chatbot_model.h5")
+WORDS_PATH = os.path.join(os.getcwd(), "model/words.pkl")
+CLASSES_PATH = os.path.join(os.getcwd(), "model/classes.pkl")
+INTENTS_PATH = os.path.join(os.getcwd(), "model/merged_dataset.json")
 
 required_files = [MODEL_PATH, WORDS_PATH, CLASSES_PATH, INTENTS_PATH]
 missing_files = [f for f in required_files if not os.path.exists(f)]
@@ -43,7 +43,7 @@ except Exception as e:
 
 def clean_up_sentence(sentence):
     try:
-        sentence_words = nltk.word_tokenize(sentence) 
+        sentence_words = nltk.word_tokenize(sentence)
         sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]  
         return sentence_words
     except Exception as e:
@@ -58,6 +58,7 @@ def bag_of_words(sentence, words):
             for i, w in enumerate(words):
                 if w == s:  
                     bag[i] = 1
+        print(f"Bag of words for '{sentence}': {bag}")
         return np.array(bag)
     except Exception as e:
         print(f"Error in bag_of_words: {e}")
@@ -73,8 +74,8 @@ def predict_class(sentence, model):
         ERROR_THRESHOLD = 0.25 
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
         results.sort(key=lambda x: x[1], reverse=True)
+        print(f"Prediction results: {results}") 
         return [{"intent": classes[r[0]], "probability": str(r[1])} for r in results]
-
     except Exception as e:
         print(f"Error in predict_class: {e}")
         return [{"intent": "error", "probability": "0"}]
@@ -82,7 +83,6 @@ def predict_class(sentence, model):
 def get_response(intents_list, intents_json):
     if not intents_list:  
         return "Sorry, I don't understand."
-
     try:
         tag = intents_list[0]["intent"]
         for intent in intents_json["intents"]:
@@ -91,7 +91,6 @@ def get_response(intents_list, intents_json):
     except Exception as e:
         print(f"Error in get_response: {e}")
         raise
-
     return "Sorry, I don't understand."
 
 @app.route('/chatbot', methods=['POST'])
@@ -109,8 +108,9 @@ def chatbot_response():
             return jsonify({"error": "No message provided"}), 400
 
         predicted_intents = predict_class(message, model)
-        response = get_response(predicted_intents, intents)
+        print(f"Predicted intents: {predicted_intents}")
 
+        response = get_response(predicted_intents, intents)
         print(f"Response: {response}") 
 
         return jsonify({"response": response})
