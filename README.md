@@ -6,7 +6,9 @@ http://localhost:3000
 ```
 
 **Endpoint:** /chatbot
+
 **Method:** POST
+
 **Description:** Menerima pesan dari pengguna, memprosesnya dengan model chatbot, dan mengembalikan respons berdasarkan intent yang diprediksi.
 
 ### Request
