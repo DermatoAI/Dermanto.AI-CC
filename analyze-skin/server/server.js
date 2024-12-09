@@ -14,7 +14,7 @@ const InputError = require('../exceptions/InputError');
             origin: ['*'],
           },
           payload: {
-              maxBytes: 2000000, 
+              maxBytes: 10000000, 
           },
         },
     });

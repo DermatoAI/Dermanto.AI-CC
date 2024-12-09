@@ -14,12 +14,6 @@ http://localhost:3000
 
 
 ### Request
-**Header**
-```
-{
-  "Authorization": "Bearer <token>"
-}
-```
 
 **Payload:** (multipart/form-data)
 | Key    | Type  | Required | Description                   |
@@ -32,7 +26,7 @@ http://localhost:3000
 
 
 ### Response
-**Success Response (Confidence Score > 99):**
+**Success Response (Confidence Score > 92):**
 
 **Status Code:** 201 Created
 ```
@@ -49,7 +43,7 @@ http://localhost:3000
 }
 ```
 
-**Partial Success Response (Confidence Score ≤ 99):**
+**Partial Success Response (Confidence Score ≤ 92):**
 
 **Status Code:** 201 Created
 ```
