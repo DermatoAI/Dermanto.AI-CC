@@ -1,20 +1,19 @@
-FROM python:3.10-slim
+FROM python:3.10.11
 
+# Set the working directory
 WORKDIR /app
 
+# Copy the requirements.txt into the container
 COPY requirements.txt /app/
 
+# Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt-get update && apt-get install -y wget \
-    && mkdir -p /usr/share/nltk_data \
-    && python -m nltk.downloader -d /usr/share/nltk_data punkt \
-    && apt-get remove -y wget \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
-
+# Copy the entire app directory into the container
 COPY . /app
 
+# Expose the port the app runs on
 EXPOSE 8080
 
+# Set the command to run the application
 CMD ["python", "app.py"]
