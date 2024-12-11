@@ -105,6 +105,24 @@ if already exist but wrong password
 }
 ```
 
+## Endpoint doctors
+- /doctors
+    - /all
+
+## [GET] /doctors/all
+```json
+{
+    "message": "get all doctors success",
+    "data": [
+        {
+            "id": "doc001",
+            "name": " dr. Adi Satriyo, Sp.KK",
+            "address": "Jakarta Selatan"
+        }
+    ]
+}
+```
+## Structure Request and Response body
 
 ## Endpoint Apointments
 - /appointments
