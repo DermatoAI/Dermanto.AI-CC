@@ -223,7 +223,7 @@ if already exist but wrong password
 
 ## Structure Request and Response body
 
-## [POST] /api/discussions/
+## [POST] /api/discussions/all
 
 ### request
 ```json
@@ -237,7 +237,7 @@ if already exist but wrong password
 ### response
 ```json
 {
-    "message": "update appointments success",
+    "message": "get all discussion success",
     "data": {
         "id": "meet828300",
         "user_id": "user123",
