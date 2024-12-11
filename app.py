@@ -88,5 +88,4 @@ def chatbot_response():
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    # Run the Flask app on localhost (127.0.0.1) for local testing
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
