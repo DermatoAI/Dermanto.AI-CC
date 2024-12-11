@@ -17,10 +17,10 @@ if already exixts
 {
     "message": "User already exists in database",
     "data": {
-        "name": "xxx",
-        "email": "xxx",
-        "role": "user",
-        "picture": "xxx"
+        "username": "user123",
+        "name": "User Test",
+        "email": "user@test.com",
+        "picture": "https://lh3.googleusercontent.com/jdkfhsikanf"
     }
 }
 ```
@@ -30,15 +30,15 @@ if doesn't exist yet
 {
     "message": "New user added to database",
     "data": {
-        "name": "xxx",
-        "email": "xxx",
-        "role": "user",
-        "picture": "xxx"
+        "username": "user123",
+        "name": "User Test",
+        "email": "user@test.com",
+        "picture": "https://lh3.googleusercontent.com/jdkfhsikanf"
     }
 }
 ```
 
-## [POST] /users/signup
+## [POST] /users/signup     (opsional)
 
 ### Request
 ```json

@@ -3,8 +3,9 @@ const router = express.Router();
 
 const userController = require('../controller/users.js');
 
-// router.patch('/:id', userController.updateUser);
-// router.delete('/:id', userController.deleteUser);
+router.get('/all', userController.getAllUsers);
+router.post('/update/:id', userController.updateUser);
+router.delete('/delete/:id', userController.deleteUser);
 
 // user signup
 router.post('/signup', userController.createNewUser);

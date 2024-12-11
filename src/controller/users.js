@@ -2,7 +2,7 @@ const userModel = require('../model/users.js');
 
 const getAllUsers = async (req, res) => {
     try {
-        const [data] = await userModel.getAllUsers();
+        const data = await userModel.getAllUsers();
 
         res.json({
             message: "get all users success",
@@ -17,35 +17,36 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;  // Assuming you are using `username` for login
     
     try {
-        const [data] = await userModel.findUser(email);
-
-        if (data.length > 0) {
-            const user = data[0];
-            if (user.password === password) {
-                res.json({
-                    message: "Login successfully",
-                    data: {
-                        id: user.id,
-                        email: user.email
-                    }
-                }); 
-            } else {
-                res.status(401).json({
-                    message: "Wrong password"
-                });
-            }
-        } else {
-            // User tidak ditemukan
-            res.status(404).json({
+        // Call the model's login function to query Firestore
+        const user = await userModel.loginUser(username);
+        
+        if (!user) {
+            return res.status(404).json({
                 message: "User not found",
                 data: null
             });
         }
+
+        // Check if the provided password matches the stored password
+        if (user.password === password) {
+            return res.json({
+                message: "Login successfully",
+                data: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email
+                }
+            });
+        } else {
+            return res.status(401).json({
+                message: "Wrong password"
+            });
+        }
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: 'Server Error',
             serverMessage: error.message
         });
@@ -61,7 +62,6 @@ const createNewUser = async (req, res) => {
             data: {
                 name: body.name,
                 email: body.email,
-                role: body.role
             }
         });
     } catch (error) {

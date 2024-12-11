@@ -1,26 +1,38 @@
-const apointmentsModel = require('../model/appointments.js');
+const appointmentsModel = require('../model/appointments.js');
 
-const getAllApointments = async (req, res) => {
+const getAllAppointments = async (req, res) => {
     try {
-        const [data] = await apointmentsModel.getAllApointments();
+        const data = await appointmentsModel.getAllAppointments();
 
-        res.json({
-            message: "get all appointments success",
+        if (!data || data.length === 0) {
+            return res.status(404).json({
+                status: "fail",
+                message: "No appointments found"
+            });
+        }
+
+        res.status(200).json({
+            status: "success",
+            message: "Get all appointments success",
             data: data
         });
     } catch (error) {
+        console.error("Error fetching appointments:", error);
+
         res.status(500).json({
-            message: 'Server Error',
-            serverMessage: error
+            status: "error",
+            message: "Server Error",
+            serverMessage: error.message || "Internal server error"
         });
     }
 };
 
-const createNewApointments = async (req, res) => {
+
+const createNewAppointments = async (req, res) => {
     const body = req.body;
     
     try {
-        await apointmentsModel.createNewApointments(body);
+        await appointmentsModel.createNewAppointments(body);
         res.status(201).json({
             message: "create new appointments success",
             data: {
@@ -38,16 +50,16 @@ const createNewApointments = async (req, res) => {
     }
 };
 
-const updateApointments = async (req, res) => {
-    const idApointments = req.params.id;
+const updateAppointments = async (req, res) => {    
+    const idAppointments = req.params.id;
     const {body} = req;
 
     try {
-        await apointmentsModel.updateApointments(body, idApointments);   
+        await appointmentsModel.updateAppointments(body, idAppointments);   
         res.json({
             message: 'update appointments success',
             data: {
-                id:idApointments,
+                id:idAppointments,
                 ...body
             }
         });
@@ -59,11 +71,11 @@ const updateApointments = async (req, res) => {
     }
 }
 
-const deleteApointments = async (req, res) => {
-    const idApointments = req.params.id;
+const deleteAppointments = async (req, res) => {
+    const idAppointments = req.params.id;
     
     try {
-        await apointmentsModel.deleteApointments(idApointments);
+        await appointmentsModel.deleteAppointments(idAppointments);
         res.json({
             message: "delete appointments success",
             data: {}
@@ -76,9 +88,69 @@ const deleteApointments = async (req, res) => {
     }
 }
 
+const getHistoryUser = async (req, res) => {
+    try {
+        const userId = req.params.id; // Ambil user_id dari parameter URL
+        
+        const result = await appointmentsModel.getHistoryUser(userId);
+        
+        if (!result.success) {
+            return res.status(404).json({
+                status: 'fail',
+                message: result.message,
+                data: result.data
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: result.message,
+            data: result.data
+        });
+    } catch (error) {
+        console.error('Error in getUserAppointments:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error',
+            serverMessage: error.message
+        });
+    }
+}
+
+const getcurrentUser = async (req, res) => {
+    try {
+        const userId = req.params.id; // Ambil user_id dari parameter URL
+        
+        const result = await appointmentsModel.getcurrentUser(userId);
+        
+        if (!result.success) {
+            return res.status(404).json({
+                status: 'fail',
+                message: result.message,
+                data: result.data
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: result.message,
+            data: result.data
+        });
+    } catch (error) {
+        console.error('Error in getUserAppointments:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error',
+            serverMessage: error.message
+        });
+    }
+}
+
 module.exports = {
-    getAllApointments,
-    createNewApointments,
-    updateApointments,
-    deleteApointments
+    getAllAppointments,
+    createNewAppointments,
+    updateAppointments,
+    deleteAppointments,
+    getHistoryUser,
+    getcurrentUser
 }

@@ -1,44 +1,156 @@
-const dbPool = require('../config/database.js');
+const db = require('../config/firestore-config.js');
+const { Timestamp } = require('firebase-admin/firestore');
 
-const getAllApointments = (req, res) => {
-    const SQLQuery = 'SELECT * FROM appointments';
+const getAllAppointments = async () => {
+    try {
+        const appointmentRef = db.collection('appointments');
+        const response = await appointmentRef.get();
 
-    return dbPool.execute(SQLQuery);
-};
-
-const createNewApointments = (body) => {
-    if (!body.appointment_date || isNaN(new Date(body.appointment_date).getTime())) {
-        throw new Error("Invalid appointment date");
+        let responseArr = [];
+        response.forEach(doc => {
+            responseArr.push({ id: doc.id, ...doc.data() });
+        });
+        
+        return responseArr;
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        throw new Error('Unable to fetch appointments'); // Lempar error untuk ditangani di tingkat yang lebih tinggi
     }
-
-    const SQLQuery = `
-        INSERT INTO appointments (id, user_id, doctor_id, appointment_date, status)
-        VALUES (null, ?, ?, ?, ?)
-    `;
-
-    return dbPool.execute(SQLQuery, [
-        body.user_id,
-        body.doctor_id,
-        body.appointment_date,
-        body.status,
-    ]);
 };
 
+const createNewAppointments = async (body) => {
+    
+    try {
+        const idmeet = `meet${Math.floor(100000 + Math.random() * 900000)}`;
 
-const updateApointments = (body, id) => {
-    const SQLQuery = `UPDATE appointments SET user_id='${body.user_id}', doctor_id='${body.doctor_id}' , status='${body.status}' WHERE id='${id}'`;
+        // Create the user with the unique username
+        const appointment = db.collection('appointments').doc(idmeet); 
+        await appointment.set({
+            user_id: body.user_id,
+            doctor_id: body.doctor_id,
+            appointment_date: body.appointment_date,
+            status: body.status,
+            create_at: Timestamp.now(),
+            updated_at: null,
+        });
+        
+        return appointment.id;
+    } catch (error) {
+        throw new Error('Error creating new appointments: ' + error.message);
+    }
+}
 
-    return dbPool.execute(SQLQuery);
+const updateAppointments = async (body, id) => {
+    try{
+        const appointmentRef = await db.collection('appointments').doc(id)
+        .update({
+            user_id: body.user_id,
+            doctor_id: body.doctor_id,
+            appointment_date: body.appointment_date,
+            status: body.status,
+            create_at: null,
+            updated_at: Timestamp.now()
+        });
+        return appointmentRef;
+    }catch(error){
+        res.send(error);
+    }
 };
 
-const deleteApointments = (id) => {
-    const SQLQuery = `DELETE FROM appointments WHERE id='${id}'`;
-
-    return dbPool.execute(SQLQuery);
+const deleteAppointments = async (id) => {
+    try{
+        const appointmentRef = await db.collection('appointments').doc(id).delete();
+        return appointmentRef;
+    }catch(error){
+        res.send(error);   
+    }
 };
+
+const getHistoryUser = async (userId) => {    
+    try {
+        // Mengambil referensi koleksi dengan kondisi yang ditentukan
+        const appointmentSnapshot = await db.collection('appointments')
+            .where('user_id', '==', userId)
+            .where('status', 'in', ['completed', 'cancelled'])
+            .get();
+
+        // Periksa apakah hasil snapshot kosong
+        if (appointmentSnapshot.empty) {
+            return {
+                success: false,
+                message: 'No appointments found for the given user and status.',
+                data: []
+            };
+        }
+
+        // Iterasi melalui hasil snapshot dan susun data dalam array
+        const appointments = appointmentSnapshot.docs.map(doc => ({
+            id: doc.id, // Sertakan ID dokumen
+            ...doc.data() // Gabungkan dengan data dokumen
+        }));
+
+        // Kembalikan data dengan pesan sukses
+        return {
+            success: true,
+            message: 'Appointments retrieved successfully.',
+            data: appointments
+        };
+    } catch (error) {
+        // Tangani kesalahan dan kembalikan pesan error
+        console.error('Error fetching appointments:', error);
+        return {
+            success: false,
+            message: 'Error fetching appointments.',
+            error: error.message
+        };
+    }
+}
+
+const getcurrentUser = async (userId) => {
+    try {
+        // Mengambil referensi koleksi dengan kondisi yang ditentukan
+        const appointmentSnapshot = await db.collection('appointments')
+            .where('user_id', '==', userId)
+            .where('status', '==', 'upcoming')
+            .get();
+
+        // Periksa apakah hasil snapshot kosong
+        if (appointmentSnapshot.empty) {
+            return {
+                success: false,
+                message: 'No appointments found for the given user and status.',
+                data: []
+            };
+        }
+
+        // Iterasi melalui hasil snapshot dan susun data dalam array
+        const appointments = appointmentSnapshot.docs.map(doc => ({
+            id: doc.id, // Sertakan ID dokumen
+            ...doc.data() // Gabungkan dengan data dokumen
+        }));
+
+        // Kembalikan data dengan pesan sukses
+        return {
+            success: true,
+            message: 'Appointments retrieved successfully.',
+            data: appointments
+        };
+    } catch (error) {
+        // Tangani kesalahan dan kembalikan pesan error
+        console.error('Error fetching appointments:', error);
+        return {
+            success: false,
+            message: 'Error fetching appointments.',
+            error: error.message
+        };
+    }
+}
+
 module.exports = { 
-    getAllApointments,
-    createNewApointments,
-    updateApointments,
-    deleteApointments
+    getAllAppointments,
+    createNewAppointments,
+    updateAppointments,
+    deleteAppointments,
+    getHistoryUser,
+    getcurrentUser
 }
