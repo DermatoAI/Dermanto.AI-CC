@@ -14,16 +14,14 @@ const getAllAppointments = async () => {
         return responseArr;
     } catch (error) {
         console.error('Error fetching appointments:', error);
-        throw new Error('Unable to fetch appointments'); // Lempar error untuk ditangani di tingkat yang lebih tinggi
+        throw new Error('Unable to fetch appointments');
     }
 };
 
 const createNewAppointments = async (body) => {
-    
     try {
         const idmeet = `meet${Math.floor(100000 + Math.random() * 900000)}`;
 
-        // Create the user with the unique username
         const appointment = db.collection('appointments').doc(idmeet); 
         await appointment.set({
             user_id: body.user_id,
@@ -68,13 +66,11 @@ const deleteAppointments = async (id) => {
 
 const getHistoryUser = async (userId) => {    
     try {
-        // Mengambil referensi koleksi dengan kondisi yang ditentukan
         const appointmentSnapshot = await db.collection('appointments')
             .where('user_id', '==', userId)
             .where('status', 'in', ['completed', 'cancelled'])
             .get();
 
-        // Periksa apakah hasil snapshot kosong
         if (appointmentSnapshot.empty) {
             return {
                 success: false,
@@ -83,20 +79,17 @@ const getHistoryUser = async (userId) => {
             };
         }
 
-        // Iterasi melalui hasil snapshot dan susun data dalam array
         const appointments = appointmentSnapshot.docs.map(doc => ({
-            id: doc.id, // Sertakan ID dokumen
-            ...doc.data() // Gabungkan dengan data dokumen
+            id: doc.id,
+            ...doc.data()
         }));
 
-        // Kembalikan data dengan pesan sukses
         return {
             success: true,
             message: 'Appointments retrieved successfully.',
             data: appointments
         };
     } catch (error) {
-        // Tangani kesalahan dan kembalikan pesan error
         console.error('Error fetching appointments:', error);
         return {
             success: false,
@@ -108,13 +101,11 @@ const getHistoryUser = async (userId) => {
 
 const getcurrentUser = async (userId) => {
     try {
-        // Mengambil referensi koleksi dengan kondisi yang ditentukan
         const appointmentSnapshot = await db.collection('appointments')
             .where('user_id', '==', userId)
             .where('status', '==', 'upcoming')
             .get();
 
-        // Periksa apakah hasil snapshot kosong
         if (appointmentSnapshot.empty) {
             return {
                 success: false,
@@ -123,20 +114,17 @@ const getcurrentUser = async (userId) => {
             };
         }
 
-        // Iterasi melalui hasil snapshot dan susun data dalam array
         const appointments = appointmentSnapshot.docs.map(doc => ({
-            id: doc.id, // Sertakan ID dokumen
-            ...doc.data() // Gabungkan dengan data dokumen
+            id: doc.id,
+            ...doc.data()
         }));
 
-        // Kembalikan data dengan pesan sukses
         return {
             success: true,
             message: 'Appointments retrieved successfully.',
             data: appointments
         };
     } catch (error) {
-        // Tangani kesalahan dan kembalikan pesan error
         console.error('Error fetching appointments:', error);
         return {
             success: false,

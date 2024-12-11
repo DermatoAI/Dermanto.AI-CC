@@ -37,16 +37,21 @@ if doesn't exist yet
     }
 }
 ```
+## Endpoint Signin/Signup (Opsional)
+- /users
+    - /signup
+    - /signin
 
-## [POST] /users/signup     (opsional)
+## Structure Request and Response body
+
+## [POST] /users/signup
 
 ### Request
 ```json
 {
-    "name": "xxx",
-    "email": "xxx",
-    "password": "xxx",
-    "role": "user"
+    "username": "user123",
+    "email": "user@test.com",
+    "password": "admin123",
 }
 ```
 
@@ -56,9 +61,8 @@ if doesn't exist yet
 {
     "message": "create new user success",
     "data": {
-        "name": "xxx",
-        "email": "xxx",
-        "role": "user"
+        "name": "user123",
+        "email": "user@test.com",
     }
 }
 ```
@@ -68,8 +72,8 @@ if doesn't exist yet
 ### Request
 ```json
 {
-    "email": "xxx",
-    "password": "xxx"
+    "username": "user123",
+    "password": "admin123"
 }
 ```
 
@@ -87,8 +91,8 @@ if already exist yet
 {
     "message": "Login successfully",
     "data": {
-        "id": "xxx",
-        "email": "xxx",
+        "username": "user123",
+        "email": "user@test.com",
     }
 }
 ```
@@ -118,12 +122,12 @@ if already exist but wrong password
     "message": "get all appointments success",
     "data": [
         {
-            "id": "x",
-            "user_id": "x",
-            "doctor_id": "x",
-            "appointment_date": "xxxx",
-            "status": "xxxx",
-            "created_at": "xxxx"
+            "id": "meet309648",
+            "user_id": "user123",
+            "doctor_id": "doc001",
+            "appointment_date": "01-01-2024 10.00",
+            "status": "upcoming",
+            "created_at": "December 10, 2024 at 8:28:47 PM UTC+7"
         }
     ]
 }

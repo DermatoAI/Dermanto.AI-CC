@@ -18,7 +18,6 @@ const app = express();
 app.use(middlerwareLogs.logger);
 app.use(errorHandler);
 app.use(express.json());
-app.use('/assets', express.static('public/images'));
 app.use(cors());
 
 // google auth endpoint

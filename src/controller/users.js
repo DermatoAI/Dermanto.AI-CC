@@ -17,10 +17,9 @@ const getAllUsers = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { username, password } = req.body;  // Assuming you are using `username` for login
+    const { username, password } = req.body;
     
     try {
-        // Call the model's login function to query Firestore
         const user = await userModel.loginUser(username);
         
         if (!user) {
@@ -30,7 +29,6 @@ const loginUser = async (req, res) => {
             });
         }
 
-        // Check if the provided password matches the stored password
         if (user.password === password) {
             return res.json({
                 message: "Login successfully",

@@ -90,7 +90,7 @@ const deleteAppointments = async (req, res) => {
 
 const getHistoryUser = async (req, res) => {
     try {
-        const userId = req.params.id; // Ambil user_id dari parameter URL
+        const userId = req.params.id;
         
         const result = await appointmentsModel.getHistoryUser(userId);
         
@@ -119,7 +119,7 @@ const getHistoryUser = async (req, res) => {
 
 const getcurrentUser = async (req, res) => {
     try {
-        const userId = req.params.id; // Ambil user_id dari parameter URL
+        const userId = req.params.id;
         
         const result = await appointmentsModel.getcurrentUser(userId);
         

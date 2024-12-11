@@ -10,6 +10,7 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // Batas 5MB
 });
+
 exports.getAllDiscussions = async (req, res) => {
   try {
       const data = await discussionModel.getAllDiscussion();
@@ -52,7 +53,6 @@ exports.createDiscussion = async (req, res) => {
 
       let imageUrl = null;
 
-      // Jika file diunggah, unggah ke Firebase Storage
       if (req.file) {
         const bucket = admin.storage().bucket();
         const fileName = `discussions/${uuidv4()}-${req.file.originalname}`;
@@ -62,14 +62,10 @@ exports.createDiscussion = async (req, res) => {
           metadata: { contentType: req.file.mimetype },
         });
 
-          // Buat file menjadi publik
-          await file.makePublic();
-
-        // URL publik
+        await file.makePublic();
         imageUrl = file.publicUrl();
       }
 
-      // Buat diskusi baru
       const newDiscussion = {
         title,
         content,
