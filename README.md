@@ -6,7 +6,9 @@ http://localhost:8080
 ```
 
 # Endpoint
+```
 /analyze-skin
+```
 
 **Method:** POST
 
