@@ -66,6 +66,7 @@ The request was successfully processed and the image was successfully analyzed w
 }
 ```
 
+
 ### Partial Success Response (Confidence Score ≤ 92)
 
 **Status Code:** 201 Created
@@ -88,6 +89,7 @@ The request was successfully processed, but the analysis result has a confidence
     }
 }
 ```
+
 
 ### Error Responses
 **Status Code:** 413 Payload Too Large
