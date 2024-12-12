@@ -12,17 +12,23 @@ http://localhost:8080
 
 **Method:** POST
 
-**Description:** Send skin images to be analyzed using machine learning models that can detect certain skin conditions.
+**Description:** 
+
+Send skin images to be analyzed using machine learning models that can detect certain skin conditions.
 
 
 ## Request
 
-**Header**
+**Headers**
 ```
 Content-Type: multipart/form-data
 ```
 
-**Payload**
+**Request Body (Payload)**
+
+The request body must use the multipart/form-data format and include two main parameters: image and userId.
+
+**Body (JSON):**
 ```
 {
   "image": "image.png",
@@ -37,9 +43,15 @@ Content-Type: multipart/form-data
 
 
 ## Response
-**Success Response (Confidence Score > 92):**
+### Success Response (Confidence Score > 92)
 
 **Status Code:** 201 Created
+
+**Condition:**
+
+The request was successfully processed and the image was successfully analyzed with a confidence level of more than 92%.
+
+**Body (JSON):**
 ```
 {
     "status": "success",
@@ -54,9 +66,15 @@ Content-Type: multipart/form-data
 }
 ```
 
-**Partial Success Response (Confidence Score ≤ 92):**
+### Partial Success Response (Confidence Score ≤ 92)
 
 **Status Code:** 201 Created
+
+**Condition:**
+
+The request was successfully processed, but the analysis result has a confidence level of less than or equal to 92%. It is recommended to send a clearer or more precise image.
+
+**Body (JSON):**
 ```
 {
   "status": "success",
@@ -71,16 +89,28 @@ Content-Type: multipart/form-data
 }
 ```
 
-**Error Responses**
-* 413 Payload Too Large
+### Error Responses
+**Status Code:** 413 Payload Too Large
+
+**Condition:**
+
+The payload (image) size is larger than the maximum allowed limit (10 MB).
+
+**Body (JSON):**
 ```
 {
   "status": "fail",
-  "message": "Payload content length greater than maximum allowed: 2000000"
+  "message": "Payload content length greater than maximum allowed: 10000000"
 }
 ```
 
-* 400 Input Error
+**Status Code:** 400 Input Error
+
+**Condition:**
+
+There was an error in the input provided, such as an invalid image format or a missing parameter.
+
+**Body (JSON):**
 ```
 {
   "status": "fail",
