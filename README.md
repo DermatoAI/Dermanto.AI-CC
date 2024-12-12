@@ -13,6 +13,7 @@ http://localhost:8080
 **Method:** POST
 
 **Description:** 
+
 Receives messages from users, processes them with a chatbot model, and returns responses based on predicted intents.
 
 ## Request
@@ -22,6 +23,7 @@ Content-Type: application/json
 ```
 
 **Request Body:** 
+
 It is mandatory to include the "message" key with a string value.
 
 **Body (JSON):**
@@ -35,6 +37,7 @@ It is mandatory to include the "message" key with a string value.
 **Sukses (200 OK)**
 
 **Condition:** 
+
 The request was successfully processed, and a chatbot response was returned based on the intent.
 
 **Body:**
@@ -47,6 +50,7 @@ The request was successfully processed, and a chatbot response was returned base
 **Error (400 Bad Request)**
 
 **Condition:** 
+
 No message sent by user (body massage is empty or nonexistent).
 
 **Body:**
@@ -59,6 +63,7 @@ No message sent by user (body massage is empty or nonexistent).
 **Error (500 Internal Server Error)**
 
 **Condition:**
+
 An internal error occurred on the server while processing the request.
 
 **Body:**
