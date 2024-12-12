@@ -32,10 +32,13 @@ const createNewAppointments = async (req, res) => {
     const body = req.body;
     
     try {
-        await appointmentsModel.createNewAppointments(body);
+        const data = await appointmentsModel.createNewAppointments(body);
+        console.log(data);
+        
         res.status(201).json({
             message: "create new appointments success",
             data: {
+                id: data,
                 user_id: body.user_id,
                 doctor_id: body.doctor_id,
                 appointment_date: body.appointment_date,

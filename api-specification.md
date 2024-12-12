@@ -167,6 +167,7 @@ if already exist but wrong password
 {
     "message": "create new appointments success",
     "data": {
+        "id": "meet137619",
         "user_id": "user123",
         "doctor_id": "doc001",
         "appointment_date": "01-01-2024 10.00",
@@ -222,31 +223,6 @@ if already exist but wrong password
     - /
 
 ## Structure Request and Response body
-
-## [POST] /api/discussions/all
-
-### request
-```json
-{
-    "user_id": "user123",
-    "doctor_id": "doc001",
-    "appointment_date": "01-01-2024 10.00",
-    "status": "upcoming"
-}
-```
-### response
-```json
-{
-    "message": "get all discussion success",
-    "data": {
-        "id": "meet828300",
-        "user_id": "user123",
-        "doctor_id": "doc001",
-        "appointment_date": "01-01-2024 10.00",
-        "status": "upcoming"
-    }
-}
-```
 
 ## [POST] /api/discussions/
 
