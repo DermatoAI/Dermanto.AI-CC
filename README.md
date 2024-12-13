@@ -11,8 +11,8 @@ This API is designed to support the development of Dermato.AI applications that 
 * **Chatbot API:** Provide automated responses to users regarding questions about skin health.
 
 For more technical details, each API has specific documentation that can be accessed through the following links:
-1. [User Management](#ttps://github.com/DermatoAI/Dermato.AI-CC/blob/dikrifzn/api-specification.md)
-2. [Skin Analysis](hhttps://github.com/DermatoAI/Dermato.AI-CC/blob/analyze-skin/README.md)
+1. [User Management](https://github.com/DermatoAI/Dermato.AI-CC/blob/dikrifzn/api-specification.md)
+2. [Skin Analysis](https://github.com/DermatoAI/Dermato.AI-CC/blob/analyze-skin/README.md)
 3. [Chatbot](https://github.com/DermatoAI/Dermato.AI-CC/blob/chatbot/README.md)
 
 # API Structure
