@@ -18,37 +18,31 @@ For more technical details, each API has specific documentation that can be acce
 # API Structure
 The following documentation describes the various API endpoints available in the Dermato.AI project. Each endpoint includes an explanation of the functionality, the HTTP method used, and the parameters accepted.
 ## 1. User Management API
-**POST /users/auth/google:** Authenticates a user using Google OAuth2.
-
-**POST /users/signup:** Sign up for a new user account.
-
-**POST /users/signin:** Authenticate the user using username and password.
-
-**GET /doctors/all:** Get a list of all available doctors.
-
-**GET /appointments/all:** Get a list of all the user's appointments.
-
-**POST /appointments/create:** Create a new appointment.
-
-**POST /appointments/update/{id}:** Update an appointment by ID.
-
-**DELETE /appointments/delete/{id}:** Delete an appointment by ID.
-
-**POST /api/discussions/all:** Get a list of all discussions.
-
-**POST /api/discussions:** Create a new discussion.
-
-**POST /api/comments:** Add a comment to a discussion.
-
-**DELETE /api/comments/{discussionId}/{commentId}:** Delete a comment from a discussion.
-
-**POST /api/likes:** Like a discussion or comment.
+| **Method** |             **Endpoint**                   |                               **Function**                          |
+|------------|--------------------------------------------|---------------------------------------------------------------------|
+| POST       | /users/auth/google                         | Authenticates a user using Google OAuth2.                           |
+| POST       | /users/signup                              | Signs up for a new user account.                                    |
+| POST       | /users/signin                              | Authenticates a user using a username and password.                 |
+| GET        | /doctors/all                               | Gets a list of all available doctors.                               |
+| GET        | /appointments/all                          | Gets a list of all the user's appointments.                         |
+| POST       | /appointments/create                       | Creates a new appointment.                                          |
+| POST       | /appointments/update/{id}                  | Updates an appointment based on the ID.                             |
+| DELETE     | /appointments/delete/{id}                  | Delete an appointment by ID.                                        |
+| POST       | /api/discussions/all                       | Get a list of all discussions.                                      |
+| POST       | /api/discussions                           | Create a new discussion.                                            |
+| POST       | /api/comments                              | Add a comment to a discussion.                                      |
+| DELETE     | /api/comments/{discussionId}/{commentId}   | Remove a comment from a discussion by discussion ID and comment ID. |
+| POST       | /api/likes                                 | Like a discussion or comment.                                       |
 
 ## 2. Skin Analysis API
-**POST /analyze-skin:** Sends an image of skin to be analyzed by a machine learning model.
+| **Method** |             **Endpoint**             |                               **Function**                          |
+|------------|--------------------------------------|---------------------------------------------------------------------|
+| POST       | /analyze-skin                        | Sends an image of skin to be analyzed by a machine learning model.  |
 
 ## 3. Chatbot API
-**POST /chatbot:** Receives a message from the user, processes it with a chatbot model, and returns a response based on the predicted intent.
+| **Method** |           **Endpoint**           |                                                    **Function**                                                            |
+|------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| POST       | /chatbot                         | Receives a message from the user, processes it with a chatbot model, and returns a response based on the predicted intent. |
 
 # Error Handling
 Each API response will include an appropriate HTTP status code and an error message if there is a problem. Here are some of the status codes used in this API:
